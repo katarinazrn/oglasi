@@ -1,0 +1,14 @@
+E:\REACT projekti\PORTFOLIO\OGLASI\server\server\bin\Debug\netcoreapp2.1\server.deps.json
+E:\REACT projekti\PORTFOLIO\OGLASI\server\server\bin\Debug\netcoreapp2.1\server.runtimeconfig.json
+E:\REACT projekti\PORTFOLIO\OGLASI\server\server\bin\Debug\netcoreapp2.1\server.runtimeconfig.dev.json
+E:\REACT projekti\PORTFOLIO\OGLASI\server\server\bin\Debug\netcoreapp2.1\server.dll
+E:\REACT projekti\PORTFOLIO\OGLASI\server\server\obj\Debug\netcoreapp2.1\server.RazorAssemblyInfo.cache
+E:\REACT projekti\PORTFOLIO\OGLASI\server\server\obj\Debug\netcoreapp2.1\server.RazorAssemblyInfo.cs
+E:\REACT projekti\PORTFOLIO\OGLASI\server\server\obj\Debug\netcoreapp2.1\server.AssemblyInfoInputs.cache
+E:\REACT projekti\PORTFOLIO\OGLASI\server\server\obj\Debug\netcoreapp2.1\server.AssemblyInfo.cs
+E:\REACT projekti\PORTFOLIO\OGLASI\server\server\obj\Debug\netcoreapp2.1\server.RazorTargetAssemblyInfo.cache
+E:\REACT projekti\PORTFOLIO\OGLASI\server\server\bin\Debug\netcoreapp2.1\server.pdb
+E:\REACT projekti\PORTFOLIO\OGLASI\server\server\obj\Debug\netcoreapp2.1\server.csproj.CoreCompileInputs.cache
+E:\REACT projekti\PORTFOLIO\OGLASI\server\server\obj\Debug\netcoreapp2.1\server.dll
+E:\REACT projekti\PORTFOLIO\OGLASI\server\server\obj\Debug\netcoreapp2.1\server.pdb
+E:\REACT projekti\PORTFOLIO\OGLASI\server\server\obj\Debug\netcoreapp2.1\server.csprojAssemblyReference.cache
