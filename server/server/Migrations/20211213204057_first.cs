@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace server.Migrations
 {
-    public partial class initial : Migration
+    public partial class first : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -27,6 +27,19 @@ namespace server.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "FieldsOfWork",
+                columns: table => new
+                {
+                    id = table.Column<long>(nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    name = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_FieldsOfWork", x => x.id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "JobListings",
                 columns: table => new
                 {
@@ -40,11 +53,25 @@ namespace server.Migrations
                     location = table.Column<string>(nullable: true),
                     seniority = table.Column<string>(nullable: true),
                     tags = table.Column<string>(nullable: true),
+                    fieldOfWork = table.Column<string>(nullable: true),
                     linkToApply = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_JobListings", x => x.id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Locations",
+                columns: table => new
+                {
+                    id = table.Column<long>(nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    name = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Locations", x => x.id);
                 });
         }
 
@@ -54,7 +81,13 @@ namespace server.Migrations
                 name: "Employers");
 
             migrationBuilder.DropTable(
+                name: "FieldsOfWork");
+
+            migrationBuilder.DropTable(
                 name: "JobListings");
+
+            migrationBuilder.DropTable(
+                name: "Locations");
         }
     }
 }

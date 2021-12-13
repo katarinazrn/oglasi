@@ -16,7 +16,7 @@ namespace server.Models
         public string location { get; set; }
         public string seniority { get; set; }
         public string tags { get; set; }
-        public string filedOfWork { get; set; }
+        public string fieldOfWork { get; set; }
         public string linkToApply { get; set; }
     }
 }

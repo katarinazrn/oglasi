@@ -2,21 +2,21 @@
 
 namespace server.Migrations
 {
-    public partial class field : Migration
+    public partial class second : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.AddColumn<string>(
-                name: "filedOfWork",
-                table: "JobListings",
+                name: "email",
+                table: "Employers",
                 nullable: true);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropColumn(
-                name: "filedOfWork",
-                table: "JobListings");
+                name: "email",
+                table: "Employers");
         }
     }
 }

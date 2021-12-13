@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
@@ -46,6 +47,46 @@ namespace server.Controllers
             return Ok(employer);
         }
 
+        string HashString(string text)
+        {
+            string salt = "123fds";
+            if (String.IsNullOrEmpty(text))
+            {
+                return String.Empty;
+            }
+
+            using (var sha = new System.Security.Cryptography.SHA256Managed())
+            {
+                byte[] textBytes = System.Text.Encoding.UTF8.GetBytes(text + salt);
+                byte[] hashBytes = sha.ComputeHash(textBytes);
+
+                string hash = BitConverter
+                    .ToString(hashBytes)
+                    .Replace("-", String.Empty);
+
+                return hash;
+            }
+        }
+
+        // POST: api/Employers/login
+        [HttpPost("login")]
+        public async Task<IActionResult> Login([FromBody] Employer e)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var employer = _context.Employers.Where(x => x.email == e.email && x.password == HashString(e.password)).FirstOrDefault();
+
+            if (employer == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(employer);
+        }
+
         // PUT: api/Employers/5
         [HttpPut("{id}")]
         public async Task<IActionResult> PutEmployer([FromRoute] long id, [FromBody] Employer employer)
@@ -83,17 +124,44 @@ namespace server.Controllers
 
         // POST: api/Employers
         [HttpPost]
-        public async Task<IActionResult> PostEmployer([FromBody] Employer employer)
+        public async Task<IActionResult> PostEmployer([FromForm] NewEmployer employer)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            _context.Employers.Add(employer);
+            Employer e = new Employer();
+            
+            e.password = HashString(employer.password);
+            e.phone = employer.phone;
+            e.PIB = employer.PIB;
+            e.website = employer.website;
+            e.email = employer.email;
+            e.description = employer.description;
+            e.address = employer.address;
+            e.name = employer.name;
+
+            try
+            {
+                string filename = String.Concat(DateTime.Now.ToString().Replace(' ', '1').Replace(':', 'u').Replace('-', '8'), employer.imageUrl);
+                string path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\Uploads", filename);
+
+                using (Stream stream = new FileStream(path, FileMode.Create))
+                {
+                    employer.file.CopyTo(stream);
+                }
+                e.imageUrl = filename;
+            }
+            catch (Exception)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError);
+            }
+
+            _context.Employers.Add(e);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetEmployer", new { id = employer.id }, employer);
+            return CreatedAtAction("GetEmployer", new { id = e.id }, e);
         }
 
         // DELETE: api/Employers/5

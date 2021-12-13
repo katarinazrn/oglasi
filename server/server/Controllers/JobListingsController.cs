@@ -69,7 +69,7 @@ namespace server.Controllers
 
             if (filter.fieldOfWork != "")
             {
-                jobListings = jobListings.Where(x => x.filedOfWork == filter.fieldOfWork).ToList();
+                jobListings = jobListings.Where(x => x.fieldOfWork == filter.fieldOfWork).ToList();
             }
 
             if (filter.titleOrKeywords != "")
@@ -131,6 +131,23 @@ namespace server.Controllers
             }
 
             _context.JobListings.Add(jobListing);
+
+            var location = _context.Locations.Where(x => x.name == jobListing.location.ToLower()).FirstOrDefault();
+            if (location==null)
+            {
+                location = new Location();
+                location.name = jobListing.location.ToLower();
+                _context.Locations.Add(location);
+            }
+
+            var field = _context.FieldsOfWork.Where(x => x.name == jobListing.fieldOfWork.ToLower()).FirstOrDefault();
+            if (field == null)
+            {
+                field = new FieldOfWork();
+                field.name = jobListing.fieldOfWork.ToLower();
+                _context.FieldsOfWork.Add(field);
+            }
+
             await _context.SaveChangesAsync();
 
             return CreatedAtAction("GetJobListing", new { id = jobListing.id }, jobListing);

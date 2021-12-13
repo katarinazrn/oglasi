@@ -50,6 +50,8 @@ namespace server
                 app.UseHsts();
             }
 
+            app.UseStaticFiles();
+
             app.UseCors("MyPolicy");
             app.UseHttpsRedirection();
             app.UseMvc();

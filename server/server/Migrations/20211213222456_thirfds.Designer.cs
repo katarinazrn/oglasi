@@ -9,8 +9,8 @@ using server.Models;
 namespace server.Migrations
 {
     [DbContext(typeof(JobsContext))]
-    [Migration("20211212204211_initial")]
-    partial class initial
+    [Migration("20211213222456_thirfds")]
+    partial class thirfds
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -29,9 +29,15 @@ namespace server.Migrations
 
                     b.Property<string>("description");
 
+                    b.Property<string>("email");
+
+                    b.Property<string>("fieldOfWork");
+
                     b.Property<string>("imageUrl");
 
                     b.Property<string>("name");
+
+                    b.Property<string>("password");
 
                     b.Property<string>("phone");
 
@@ -40,6 +46,18 @@ namespace server.Migrations
                     b.HasKey("id");
 
                     b.ToTable("Employers");
+                });
+
+            modelBuilder.Entity("server.Models.FieldOfWork", b =>
+                {
+                    b.Property<long>("id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("name");
+
+                    b.HasKey("id");
+
+                    b.ToTable("FieldsOfWork");
                 });
 
             modelBuilder.Entity("server.Models.JobListing", b =>
@@ -55,6 +73,8 @@ namespace server.Migrations
 
                     b.Property<long>("employerId");
 
+                    b.Property<string>("fieldOfWork");
+
                     b.Property<string>("linkToApply");
 
                     b.Property<string>("location");
@@ -68,6 +88,18 @@ namespace server.Migrations
                     b.HasKey("id");
 
                     b.ToTable("JobListings");
+                });
+
+            modelBuilder.Entity("server.Models.Location", b =>
+                {
+                    b.Property<long>("id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("name");
+
+                    b.HasKey("id");
+
+                    b.ToTable("Locations");
                 });
 #pragma warning restore 612, 618
         }

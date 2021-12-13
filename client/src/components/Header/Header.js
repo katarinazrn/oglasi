@@ -12,8 +12,14 @@ const Header = props => {
                     <li className="nav-item">
                         <NavLink className="nav-link" to='/jobs'>Jobs</NavLink>
                     </li>
-                    <li className="nav-item">
-                        <NavLink className="nav-link" to='/employers'>Employers</NavLink>
+                    <li className="nav-item dropdown">
+                        <button className="btn dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Employers
+                        </button>
+                        <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                            <NavLink to='/employers' className="dropdown-item" href="#">Meet Employers</NavLink>
+                            <NavLink to='/employers/post-job' className="dropdown-item" href="#">Post a job</NavLink>
+                        </div>
                     </li>
                 </ul>
             </div>

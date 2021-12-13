@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import { Link, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { useState } from "react/cjs/react.development";
 import moment from "moment";
 import SquareImage from "../UI/SquareImage";
@@ -38,8 +38,8 @@ const JobListingDetails = props => {
                         {job.deadline && <p className="p-0 m-0">
                             Deadline: <b> {moment(new Date(job.deadline)).format("MMMM DD, YYYY")}</b>
                         </p>}
-                        {job.filedOfWork && <p className="p-0 m-0">
-                            Field of word: <b>{job.filedOfWork} </b>
+                        {job.fieldOfWork && <p className="p-0 m-0">
+                            Field of work: <b>{job.fieldOfWork} </b>
                         </p>}
                         {job.seniority && <p className="p-0 m-0">
                             Seniority: <b>{job.seniority} </b>

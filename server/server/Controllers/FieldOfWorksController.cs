@@ -11,56 +11,56 @@ namespace server.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class LocationsController : ControllerBase
+    public class FieldOfWorksController : ControllerBase
     {
         private readonly JobsContext _context;
 
-        public LocationsController(JobsContext context)
+        public FieldOfWorksController(JobsContext context)
         {
             _context = context;
         }
 
-        // GET: api/Locations
+        // GET: api/FieldOfWorks
         [HttpGet]
-        public IEnumerable<Location> GetLocations()
+        public IEnumerable<FieldOfWork> GetFieldsOfWork()
         {
-            return _context.Locations;
+            return _context.FieldsOfWork;
         }
 
-        // GET: api/Locations/5
+        // GET: api/FieldOfWorks/5
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetLocation([FromRoute] long id)
+        public async Task<IActionResult> GetFieldOfWork([FromRoute] long id)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            var location = await _context.Locations.FindAsync(id);
+            var fieldOfWork = await _context.FieldsOfWork.FindAsync(id);
 
-            if (location == null)
+            if (fieldOfWork == null)
             {
                 return NotFound();
             }
 
-            return Ok(location);
+            return Ok(fieldOfWork);
         }
 
-        // PUT: api/Locations/5
+        // PUT: api/FieldOfWorks/5
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutLocation([FromRoute] long id, [FromBody] Location location)
+        public async Task<IActionResult> PutFieldOfWork([FromRoute] long id, [FromBody] FieldOfWork fieldOfWork)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            if (id != location.id)
+            if (id != fieldOfWork.id)
             {
                 return BadRequest();
             }
 
-            _context.Entry(location).State = EntityState.Modified;
+            _context.Entry(fieldOfWork).State = EntityState.Modified;
 
             try
             {
@@ -68,7 +68,7 @@ namespace server.Controllers
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!LocationExists(id))
+                if (!FieldOfWorkExists(id))
                 {
                     return NotFound();
                 }
@@ -81,45 +81,45 @@ namespace server.Controllers
             return NoContent();
         }
 
-        // POST: api/Locations
+        // POST: api/FieldOfWorks
         [HttpPost]
-        public async Task<IActionResult> PostLocation([FromBody] Location location)
+        public async Task<IActionResult> PostFieldOfWork([FromBody] FieldOfWork fieldOfWork)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            _context.Locations.Add(location);
+            _context.FieldsOfWork.Add(fieldOfWork);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetLocation", new { id = location.id }, location);
+            return CreatedAtAction("GetFieldOfWork", new { id = fieldOfWork.id }, fieldOfWork);
         }
 
-        // DELETE: api/Locations/5
+        // DELETE: api/FieldOfWorks/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteLocation([FromRoute] long id)
+        public async Task<IActionResult> DeleteFieldOfWork([FromRoute] long id)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            var location = await _context.Locations.FindAsync(id);
-            if (location == null)
+            var fieldOfWork = await _context.FieldsOfWork.FindAsync(id);
+            if (fieldOfWork == null)
             {
                 return NotFound();
             }
 
-            _context.Locations.Remove(location);
+            _context.FieldsOfWork.Remove(fieldOfWork);
             await _context.SaveChangesAsync();
 
-            return Ok(location);
+            return Ok(fieldOfWork);
         }
 
-        private bool LocationExists(long id)
+        private bool FieldOfWorkExists(long id)
         {
-            return _context.Locations.Any(e => e.id == id);
+            return _context.FieldsOfWork.Any(e => e.id == id);
         }
     }
 }

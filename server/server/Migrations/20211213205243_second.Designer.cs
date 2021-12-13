@@ -2,15 +2,17 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using server.Models;
 
 namespace server.Migrations
 {
     [DbContext(typeof(JobsContext))]
-    partial class JobsContextModelSnapshot : ModelSnapshot
+    [Migration("20211213205243_second")]
+    partial class second
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -29,13 +31,9 @@ namespace server.Migrations
 
                     b.Property<string>("email");
 
-                    b.Property<string>("fieldOfWork");
-
                     b.Property<string>("imageUrl");
 
                     b.Property<string>("name");
-
-                    b.Property<string>("password");
 
                     b.Property<string>("phone");
 

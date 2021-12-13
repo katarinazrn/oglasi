@@ -18,22 +18,21 @@ const Search = props => {
     const [location, setLocation] = useState('');
     const [seniority, setSeniority] = useState('');
     const [field, setField] = useState('');
-    const [titleOrKeyword, setTitleOrKeyword] = useState('');
-
 
     useEffect(() => {
-        props.filter(location, seniority, field, titleOrKeyword)
+        props.filter(location, seniority, field)
     }, [location, seniority, field])
 
     const handleSubmit = (e) => {
         e.preventDefault()
-        props.filter(location, seniority, field, titleOrKeyword)
+        props.filter(location, seniority, field);
     }
 
     return (
         <form onSubmit={handleSubmit} className="mt-4 p-1">
             <div className="form-group m-1 d-flex">
-                <input className="form-control me-2" onChange={(e) => setTitleOrKeyword(e.target.value)} type='search' placeholder="Job title or keyword..." />
+                <input className="form-control me-2" onChange={(e) => props.searchTermChange(e.target.value)} 
+                type='search' value={props.titleOrKeyword} placeholder="Job title or keyword..." />
                 <input className="btn btn-secondary" type="submit" value="Search" />
             </div>
             <div className="d-flex">

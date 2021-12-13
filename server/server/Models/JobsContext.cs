@@ -13,11 +13,14 @@ namespace server.Models
         {
             var folder = Environment.SpecialFolder.LocalApplicationData;
             var path = Environment.GetFolderPath(folder);
-            DBPath = System.IO.Path.Join(path, "jobListings.db");
+            DBPath = System.IO.Path.Join(path, "JL.db");
         }
 
         public DbSet<JobListing> JobListings { get; set; }
         public DbSet<Employer> Employers { get; set;}
+        public DbSet<Location> Locations { get; set; }
+        public DbSet<FieldOfWork> FieldsOfWork { get; set; }
+
 
         protected override void OnConfiguring(DbContextOptionsBuilder options) 
             => options.UseSqlite("Data Source="+DBPath);

@@ -1,11 +1,13 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Http;
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace server.Models
 {
-    public class Employer
+    public class NewEmployer
     {
         public long id { get; set; }
         public string name { get; set; }
@@ -17,6 +19,6 @@ namespace server.Models
         public string email { get; set; }
         public string website { get; set; }
         public string phone { get; set; }
-        public string fieldOfWork { get; set; }
+        public IFormFile file { get; set; }
     }
 }
