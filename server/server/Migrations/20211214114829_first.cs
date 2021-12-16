@@ -14,12 +14,15 @@ namespace server.Migrations
                     id = table.Column<long>(nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
                     name = table.Column<string>(nullable: true),
+                    password = table.Column<string>(nullable: true),
                     description = table.Column<string>(nullable: true),
                     imageUrl = table.Column<string>(nullable: true),
                     PIB = table.Column<string>(nullable: true),
                     address = table.Column<string>(nullable: true),
+                    email = table.Column<string>(nullable: true),
                     website = table.Column<string>(nullable: true),
-                    phone = table.Column<string>(nullable: true)
+                    phone = table.Column<string>(nullable: true),
+                    fieldOfWork = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {

@@ -1,5 +1,4 @@
-import { Fragment, useEffect, useState } from 'react';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom';
 import './App.css';
 import Header from './components/Header/Header';
 import JobListingDetails from './components/JobListings/JobListingDetails';
@@ -7,101 +6,56 @@ import JobListings from './components/JobListings/JobListings';
 import LandingPage from './components/LandingPage/LandingPage';
 import Search from './components/Search/Search';
 import Container from './components/UI/Container';
-import { useNavigate } from 'react-router-dom';
 import PostJob from './components/Employers/PostJob';
 import Login from './components/Employers/Login';
 import Register from './components/Employers/Register';
 import EmployersList from './components/Employers/EmployersList';
+import EmployerDetails from './components/Employers/EmployerDetails';
+import EditJob from './components/Employers/EditJob';
+import Footer from './components/Footer/Footer';
+import JobsContext from './store/jobs-context';
+import { useContext } from 'react';
+import NotFound from './components/UI/NotFound';
 
 function App() {
-  const [jobs, setJobs] = useState([])
-  const [allJobs, setAllJobs] = useState([])
-  const [allEmployers,setAllEmployers]=useState([])
-  const [startedSearch, setStartedSearch] = useState(false)
-  const [titleOrKeyword, setTitleOrKeyword] = useState('');
 
-  const navigate = useNavigate()
-
-  useEffect(() => {
-    fetch('https://localhost:44318/api/joblistings')
-      .then(res => res.json())
-      .then(data => {
-        setAllJobs(data)
-        setJobs(data)
-      })
-
-  }, [])
-
-  useEffect(() => {
-    fetch('https://localhost:44318/api/employers')
-      .then(res => res.json())
-      .then(data => {
-        setAllEmployers(data)
-      })
-
-  }, [])
-
-  const filter = (location, seniority, fieldOfWork) => {
-    setStartedSearch(true);
-    let jobListings = [...allJobs];
-
-    if (location.trim() != "") {
-      jobListings = jobListings.filter(x => x.location === location);
-    }
-
-    if (seniority.trim() != "") {
-      jobListings = jobListings.filter(x => x.seniority === seniority);
-    }
-
-    if (fieldOfWork.trim() != "") {
-      jobListings = jobListings.filter(x => x.filedOfWork === fieldOfWork);
-    }
-
-    if (titleOrKeyword.trim() != "") {
-      jobListings = jobListings.filter(x => x.title.toLowerCase().includes(titleOrKeyword.toLowerCase())
-        || x.tags.toLowerCase().includes(titleOrKeyword.toLowerCase()));
-    }
-
-    setJobs(jobListings);
-  }
-
-  const find = () => {
-
-    filter("", "", "", titleOrKeyword);
-    navigate('/jobs');
-  }
-
-  const searchTermChange = term => {
-    setTitleOrKeyword(term);
-  }
+  const jobs_context = useContext(JobsContext);
 
   return (
-    <Fragment>
+    <div className='d-flex flex-column min-vh-100'>
       <Header />
       <Routes>
-        <Route exact path='/' element={<LandingPage find={find} handleInput={searchTermChange} />} />
+        <Route exact path='/' element={<LandingPage />} />
       </Routes>
       <Container>
         <Routes>
-          <Route exact path='/jobs' element={
-            <Search searchTermChange={searchTermChange} titleOrKeyword={titleOrKeyword} filter={filter} />} />
+          <Route exact path='/jobs' element={<Search />} />
         </Routes>
         <Routes>
-          <Route exact path='/jobs' element={<JobListings startedSearch={startedSearch} jobs={jobs} />} />
+          <Route exact path='/jobs' element={<JobListings data={jobs_context.filteredJobs} />} />
         </Routes>
         <Routes>
-          <Route exact path='/jobs/:id' element={<JobListingDetails jobs={jobs} />} />
+          <Route exact path='/jobs/:id' element={<JobListingDetails />} />
+        </Routes>
+        </Container>
+        <Container>
+        <Routes>
+          <Route path='employers'>
+            <Route exact path='login' element={<Login />} />
+            <Route exact path='register' element={<Register />} />
+            <Route path='post-job/:id' element={<EditJob />} />
+            <Route path='post-job/' element={<PostJob />} />
+            <Route exact path=':id' element={<EmployerDetails />} />
+            <Route exact path='' element={<EmployersList />} />
+            <Route exact path='*' element={<NotFound />} />
+          </Route>
         </Routes>
         <Routes>
-          <Route exact path='/employers/post-job' element={<PostJob />} />
-          <Route exact path='/employers/' element={<EmployersList employers={allEmployers} />} />
-        </Routes>
-        <Routes>
-          <Route  path='/employers/login' element={<Login />} />
-          <Route  path='/employers/register' element={<Register />} />
+          <Route path='/404' element={<NotFound />} />
         </Routes>
       </Container>
-    </Fragment>
+      <Footer />
+    </div>
   );
 }
 

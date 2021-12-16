@@ -4,7 +4,15 @@ import job2 from '../../assets/job2.png';
 import people from '../../assets/imageedit_10_7816624577.png';
 import Container from '../UI/Container';
 
+import JobsContext from '../../store/jobs-context';
+import { useContext, useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
+
 const LandingPage = (props) => {
+
+    const jobs_context=useContext(JobsContext);
+    const inputRef=useRef();
+    const navigate=useNavigate();
 
     return (
         <div className='p-5' style={{ backgroundImage: `url(${bg})`, backgroundSize: 'cover', backgroundRepeat: 'no-repeat' }}>
@@ -12,8 +20,11 @@ const LandingPage = (props) => {
                 <h1 className="text-center text-light"> Find your dream job here</h1>
                 <div className='d-flex justify-content-center'>
                     <div className='col-10 p-4 d-flex'>
-                        <input placeholder='Title or keyword...' onChange={(e) => props.handleInput(e.target.value)} className='form-control' type='search' />
-                        <button className="btn btn-secondary ms-2" onClick={props.find}>Search</button>
+                        <input placeholder='Title or keyword...' ref={inputRef} className='form-control' type='search' />
+                        <button className="btn btn-secondary ms-2" onClick={()=>{
+                            jobs_context.setSearchTerm(inputRef.current.value);
+                            navigate('/jobs');
+                            }}>Search</button>
                     </div>
                 </div>
                 <div className='d-flex justify-content-center mb-5'>

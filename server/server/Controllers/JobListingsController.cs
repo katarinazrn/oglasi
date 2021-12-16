@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -9,6 +10,7 @@ using server.Models;
 
 namespace server.Controllers
 {
+    [EnableCors("MyPolicy")]
     [Route("api/[controller]")]
     [ApiController]
     public class JobListingsController : ControllerBase
@@ -130,7 +132,14 @@ namespace server.Controllers
                 return BadRequest(ModelState);
             }
 
-            _context.JobListings.Add(jobListing);
+            long id;
+            using (var context = new JobsContext())
+            {
+                context.JobListings.Add(jobListing);
+                context.SaveChanges();
+
+                id= jobListing.id; 
+            }
 
             var location = _context.Locations.Where(x => x.name == jobListing.location.ToLower()).FirstOrDefault();
             if (location==null)
@@ -150,7 +159,7 @@ namespace server.Controllers
 
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetJobListing", new { id = jobListing.id }, jobListing);
+            return Ok(_context.JobListings.Where(j=>j.id==id).FirstOrDefault());
         }
 
         // DELETE: api/JobListings/5

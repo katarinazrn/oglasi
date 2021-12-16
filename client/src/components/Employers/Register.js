@@ -1,7 +1,19 @@
-import { useState } from 'react';
+import { useState, useContext } from 'react';
 import SquareImage from '../UI/SquareImage';
+import AuthContext from '../../store/auth-context';
+import EmployersContext from '../../store/employers-context';
+import { Link, useNavigate } from 'react-router-dom';
+
 
 const Register = props => {
+    const ctx = useContext(AuthContext);
+    const employers_context = useContext(EmployersContext);
+
+    const navigate = useNavigate()
+    
+    if (ctx.isLoggedIn) {
+        navigate('/')
+    }
     const [name, setName] = useState('')
     const [description, setDescription] = useState('')
     const [imageUrl, setImageUrl] = useState('')
@@ -58,8 +70,10 @@ const Register = props => {
         })
             .then(res => res.json())
             .then(data => {
-                console.log(data)
+                ctx.login(email, password)
+                employers_context.addEmployer(data)
             })
+            .catch(m => console.log(m))
     }
 
     const handleFileInput = e => {
@@ -113,6 +127,11 @@ const Register = props => {
             </div>
             <div className='d-flex justify-content-center m-3'>
                 <input className='btn btn-light px-3' type='submit' value='Register' />
+            </div>
+            <div className='text-center'>
+                <Link to='/employers/login' style={{ textDecoration: 'none' }} className='text-light' >
+                    Already have account? Login instead.
+                </Link>
             </div>
         </form>
     )

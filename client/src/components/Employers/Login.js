@@ -1,27 +1,21 @@
-import { useState } from 'react';
+import { useState, useContext } from 'react';
+import AuthContext from '../../store/auth-context';
+import { useNavigate, Link } from 'react-router-dom';
 
 const Login = props => {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
+    const ctx = useContext(AuthContext);
+    const navigate = useNavigate();
 
     const handleSubmit = e => {
         e.preventDefault();
 
-        fetch('https://localhost:44318/api/employers/login',{
-            method:'POST',
-            headers:{
-                'Access-Control-Allow-Origin': '*',
-                'Content-type':'application/json'
-            },
-            body:JSON.stringify({
-                email,
-                password
-            })
-        })
-        .then(res=>res.json())
-        .then(data=>{
-            console.log(data)
-        })
+        ctx.login(email, password);
+    }
+
+    if (ctx.isLoggedIn) {
+        navigate(-1)
     }
 
     return (
@@ -37,6 +31,11 @@ const Login = props => {
             </div>
             <div className='d-flex justify-content-center m-3'>
                 <input className='btn btn-light px-3' type='submit' value='Login' />
+            </div>
+            <div className='text-center'>
+                <Link to='/employers/register' style={{ textDecoration: 'none' }} className='text-light' >
+                    Don't have an account yet? Sign Up.
+                </Link>
             </div>
         </form>
     )

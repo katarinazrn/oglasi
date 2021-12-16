@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -10,6 +11,7 @@ using server.Models;
 
 namespace server.Controllers
 {
+    [EnableCors("MyPolicy")]
     [Route("api/[controller]")]
     [ApiController]
     public class EmployersController : ControllerBase
@@ -131,6 +133,11 @@ namespace server.Controllers
                 return BadRequest(ModelState);
             }
 
+            if (_context.Employers.Where(x => x.email == employer.email).ToList().Count()>0)
+            {
+                return BadRequest();
+            }
+
             Employer e = new Employer();
             
             e.password = HashString(employer.password);
@@ -161,7 +168,7 @@ namespace server.Controllers
             _context.Employers.Add(e);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetEmployer", new { id = e.id }, e);
+            return CreatedAtAction("Login", e);
         }
 
         // DELETE: api/Employers/5

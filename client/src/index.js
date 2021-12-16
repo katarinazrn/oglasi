@@ -3,14 +3,26 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import $ from 'jquery';
+import Popper from 'popper.js';
+import 'bootstrap/dist/js/bootstrap.bundle.min';
 import bootstrap from 'bootstrap/dist/css/bootstrap.min.css';
 import { BrowserRouter } from 'react-router-dom';
+import { AuthContextProvider } from './store/auth-context';
+import { JobsContextProvider } from './store/jobs-context';
+import { EmployersContextProvider } from './store/employers-context';
 
 
 ReactDOM.render(
-  <BrowserRouter>
-    <App />
-  </BrowserRouter>,
+  <AuthContextProvider>
+    <JobsContextProvider>
+      <EmployersContextProvider>
+        <BrowserRouter>
+          <App />
+        </BrowserRouter>
+      </EmployersContextProvider>
+    </JobsContextProvider>
+  </AuthContextProvider>,
   document.getElementById('root')
 );
 

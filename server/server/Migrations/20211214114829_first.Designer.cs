@@ -9,8 +9,8 @@ using server.Models;
 namespace server.Migrations
 {
     [DbContext(typeof(JobsContext))]
-    [Migration("20211213222456_thirfds")]
-    partial class thirfds
+    [Migration("20211214114829_first")]
+    partial class first
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

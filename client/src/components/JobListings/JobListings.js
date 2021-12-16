@@ -1,17 +1,13 @@
-import JobListingCard from "./JobListingCard";
+import Pagination from "../UI/Pagination";
 
-const JobListings = props=>{
+const JobListings = props => {
 
-    if(props.jobs.length==0 && props.startedSearch){
-        return <h3 className="text-center mt-4 text-muted">No result</h3>
-    }
-
-    return(
-        <div>
-            {props.jobs.map(job=><JobListingCard key={job.id} job={job} />)}
-        </div>
+    return (
+        <Pagination
+            data={props.data}
+            limit={10}
+        />
     )
-
 }
 
 export default JobListings;
