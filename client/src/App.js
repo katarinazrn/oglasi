@@ -16,6 +16,7 @@ import Footer from './components/Footer/Footer';
 import JobsContext from './store/jobs-context';
 import { useContext } from 'react';
 import NotFound from './components/UI/NotFound';
+import Message from './components/UI/Message';
 
 function App() {
 
@@ -53,6 +54,7 @@ function App() {
         <Routes>
           <Route path='/404' element={<NotFound />} />
         </Routes>
+        <Message />
       </Container>
       <Footer />
     </div>

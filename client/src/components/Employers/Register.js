@@ -3,6 +3,7 @@ import SquareImage from '../UI/SquareImage';
 import AuthContext from '../../store/auth-context';
 import EmployersContext from '../../store/employers-context';
 import { Link, useNavigate } from 'react-router-dom';
+import bg from '../../assets/bgr.png';
 
 
 const Register = props => {
@@ -10,7 +11,7 @@ const Register = props => {
     const employers_context = useContext(EmployersContext);
 
     const navigate = useNavigate()
-    
+
     if (ctx.isLoggedIn) {
         navigate('/')
     }
@@ -70,8 +71,8 @@ const Register = props => {
         })
             .then(res => res.json())
             .then(data => {
-                ctx.login(email, password)
                 employers_context.addEmployer(data)
+                ctx.login(email, password)
             })
             .catch(m => console.log(m))
     }
@@ -83,8 +84,13 @@ const Register = props => {
     }
 
     return (
-        <form className='bg-success text-light my-5 p-3 rounded' onSubmit={handleSubmit}>
-            <h1 className='text-light text-center'>Register</h1>
+        <form className='bg-success fw-bold text-light my-5 p-3 rounded' onSubmit={handleSubmit}
+            style={{
+                backgroundImage: `url(${bg})`,
+                backgroundSize: 'cover',
+                backgroundRepeat: 'no-repeat'
+            }} >
+            <h1 className='text-light fw-bold text-center'>Register</h1>
             <div className='form-group'>
                 <label>Name</label>
                 <input className="form-control" type='text' onChange={e => setName(e.target.value)} value={name} />

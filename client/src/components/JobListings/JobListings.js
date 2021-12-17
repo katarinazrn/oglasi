@@ -2,6 +2,11 @@ import Pagination from "../UI/Pagination";
 
 const JobListings = props => {
 
+
+    if(!props.data){
+        return <div>Loading...</div>
+    }
+
     return (
         <Pagination
             data={props.data}

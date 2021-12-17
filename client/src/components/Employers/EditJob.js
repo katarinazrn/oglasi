@@ -41,6 +41,7 @@ const EditJob = props => {
 
     return (
         <div className="my-5">
+            <h1>Edit job post</h1>
             <JobForm
                 job={job}
                 handleChange={handleChange}

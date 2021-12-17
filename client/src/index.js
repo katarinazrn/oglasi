@@ -6,7 +6,7 @@ import reportWebVitals from './reportWebVitals';
 import $ from 'jquery';
 import Popper from 'popper.js';
 import 'bootstrap/dist/js/bootstrap.bundle.min';
-import bootstrap from 'bootstrap/dist/css/bootstrap.min.css';
+import "bootswatch/dist/flatly/bootstrap.min.css"
 import { BrowserRouter } from 'react-router-dom';
 import { AuthContextProvider } from './store/auth-context';
 import { JobsContextProvider } from './store/jobs-context';

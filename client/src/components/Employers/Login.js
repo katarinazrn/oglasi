@@ -1,6 +1,7 @@
 import { useState, useContext } from 'react';
 import AuthContext from '../../store/auth-context';
 import { useNavigate, Link } from 'react-router-dom';
+import bg from '../../assets/bg.png';
 
 const Login = props => {
     const [email, setEmail] = useState('')
@@ -10,7 +11,6 @@ const Login = props => {
 
     const handleSubmit = e => {
         e.preventDefault();
-
         ctx.login(email, password);
     }
 
@@ -19,8 +19,13 @@ const Login = props => {
     }
 
     return (
-        <form className='bg-success text-light my-5 p-3 rounded' onSubmit={handleSubmit}>
-            <h1 className='text-light text-center'>Login</h1>
+        <form className='bg-success text-light fw-bold my-5 p-3 rounded' style={{
+            backgroundImage: `url(${bg})`,
+            backgroundSize: 'cover',
+            backgroundRepeat: 'no-repeat'
+        }}
+            onSubmit={handleSubmit}>
+            <h1 className='text-light fw-bold text-center'>Login</h1>
             <div className='form-group'>
                 <label>Email</label>
                 <input className="form-control" type='text' onChange={e => setEmail(e.target.value)} value={email} />

@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -11,9 +12,12 @@ namespace server.Models
         public string DBPath { get; }
         public JobsContext()
         {
-            var folder = Environment.SpecialFolder.LocalApplicationData;
-            var path = Environment.GetFolderPath(folder);
-            DBPath = System.IO.Path.Join(path, "JL.db");
+            //var folder = Environment.SpecialFolder.LocalApplicationData;
+            string folder=Directory.GetCurrentDirectory();
+            //var path = Environment.GetFolderPath(folder);
+            //DBPath = System.IO.Path.Join(path, "JL.db");
+            var path = Directory.GetParent(Directory.GetParent(folder).FullName).FullName;
+            DBPath=System.IO.Path.Join(path, "JL.db");
         }
 
         public DbSet<JobListing> JobListings { get; set; }

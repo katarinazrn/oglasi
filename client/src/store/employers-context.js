@@ -14,9 +14,17 @@ export const EmployersContextProvider = props => {
     const [searchTerm, setSearchTerm] = useState('')
 
     useEffect(() => {
-        fetch('https://localhost:44318/api/employers')
+        fetch('https://localhost:44318/api/employers',{
+            method:'GET',
+            headers: {
+                'Access-Control-Allow-Origin': '*',
+                'Content-type': 'application/json',
+                'Authorization': 'Bearer ' + localStorage.getItem("token")
+            }
+        })
             .then(res => res.json())
             .then(data => {
+                data=data.sort((a,b)=> (''+a.name).localeCompare(''+b.name))
                 setEmployers(data)
                 setAllEmployers(data)
             })
@@ -30,13 +38,29 @@ export const EmployersContextProvider = props => {
         setEmployers(newEmployers);
     }, [searchTerm])
 
+    useEffect(() => {
+
+        let newEmployers = [...allEmployers];
+        newEmployers = newEmployers.filter(e => e.name.toLowerCase().includes(searchTerm.toLowerCase()));
+        setEmployers(newEmployers);
+
+    }, [allEmployers])
+
     const addEmployer = employer => {
         setAllEmployers(prev => {
             let newEmployers = [...prev];
             newEmployers.push(employer);
             return newEmployers;
         })
+
+        setEmployers(prev => {
+            let newEmployers = [...prev];
+            newEmployers.push(employer);
+            return newEmployers;
+        })
     }
+
+
 
     const context = {
         employers: employers,

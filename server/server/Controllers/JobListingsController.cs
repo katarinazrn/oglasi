@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -10,6 +12,7 @@ using server.Models;
 
 namespace server.Controllers
 {
+    [Authorize]
     [EnableCors("MyPolicy")]
     [Route("api/[controller]")]
     [ApiController]
@@ -23,6 +26,7 @@ namespace server.Controllers
         }
 
         // GET: api/JobListings
+        [AllowAnonymous]
         [HttpGet]
         public IEnumerable<JobListing> GetJobListings()
         {
@@ -30,6 +34,7 @@ namespace server.Controllers
         }
 
         // GET: api/JobListings/5
+        [AllowAnonymous]
         [HttpGet("{id}")]
         public async Task<IActionResult> GetJobListing([FromRoute] long id)
         {
@@ -49,6 +54,7 @@ namespace server.Controllers
         }
 
         // POST: api/JobListings/filter
+        [AllowAnonymous]
         [HttpPost("filter")]
         public async Task<IActionResult> GetFilteredJobListings([FromBody] Filter filter)
         {
@@ -97,6 +103,13 @@ namespace server.Controllers
                 return BadRequest(ModelState);
             }
 
+            var identity = HttpContext.User.Identity as ClaimsIdentity;
+
+            if (long.Parse(identity.Name) != jobListing.employerId)
+            {
+                return Unauthorized();
+            }
+
             if (id != jobListing.id)
             {
                 return BadRequest();
@@ -132,6 +145,13 @@ namespace server.Controllers
                 return BadRequest(ModelState);
             }
 
+            var identity = HttpContext.User.Identity as ClaimsIdentity;
+
+            if (long.Parse(identity.Name) != jobListing.employerId)
+            {
+                return Unauthorized();
+            }
+
             long id;
             using (var context = new JobsContext())
             {
@@ -164,23 +184,30 @@ namespace server.Controllers
 
         // DELETE: api/JobListings/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteJobListing([FromRoute] long id)
+        public async Task<IActionResult> DeleteJobListing([FromBody] JobListing jobListing)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            var jobListing = await _context.JobListings.FindAsync(id);
-            if (jobListing == null)
+            var identity = HttpContext.User.Identity as ClaimsIdentity;
+
+            if (long.Parse(identity.Name) != jobListing.employerId)
+            {
+                return Unauthorized();
+            }
+
+            var jl = await _context.JobListings.FindAsync(jobListing.id);
+            if (jl == null)
             {
                 return NotFound();
             }
 
-            _context.JobListings.Remove(jobListing);
+            _context.JobListings.Remove(jl);
             await _context.SaveChangesAsync();
 
-            return Ok(jobListing);
+            return Ok(jl);
         }
 
         private bool JobListingExists(long id)

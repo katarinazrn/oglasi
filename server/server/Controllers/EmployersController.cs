@@ -2,7 +2,9 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -11,20 +13,24 @@ using server.Models;
 
 namespace server.Controllers
 {
+    [Authorize]
     [EnableCors("MyPolicy")]
     [Route("api/[controller]")]
     [ApiController]
     public class EmployersController : ControllerBase
     {
         private readonly JobsContext _context;
+        private readonly IJWTAuthenticationManager jwtAuthenticationManager;
 
-        public EmployersController(JobsContext context)
+        public EmployersController(JobsContext context, IJWTAuthenticationManager jwt)
         {
             _context = context;
+            jwtAuthenticationManager = jwt;
         }
 
         // GET: api/Employers
         [HttpGet]
+        [AllowAnonymous]
         public IEnumerable<Employer> GetEmployers()
         {
             return _context.Employers;
@@ -32,6 +38,7 @@ namespace server.Controllers
 
         // GET: api/Employers/5
         [HttpGet("{id}")]
+        [AllowAnonymous]
         public async Task<IActionResult> GetEmployer([FromRoute] long id)
         {
             if (!ModelState.IsValid)
@@ -72,6 +79,7 @@ namespace server.Controllers
 
         // POST: api/Employers/login
         [HttpPost("login")]
+        [AllowAnonymous]
         public async Task<IActionResult> Login([FromBody] Employer e)
         {
             if (!ModelState.IsValid)
@@ -86,7 +94,27 @@ namespace server.Controllers
                 return NotFound();
             }
 
-            return Ok(employer);
+            var token = jwtAuthenticationManager.Authenticate(employer);
+
+            if (token == null)
+            {
+                return Unauthorized();
+            }
+
+            AuthenticatedUser au = new AuthenticatedUser();
+            au.address = employer.address;
+            au.description = employer.description;
+            au.email = employer.email;
+            au.fieldOfWork = employer.fieldOfWork;
+            au.id = employer.id;
+            au.imageUrl = employer.imageUrl;
+            au.name = employer.name;
+            au.phone = employer.phone;
+            au.PIB = employer.PIB;
+            au.token = token;
+            au.website = employer.website;
+
+            return Ok(au);
         }
 
         // PUT: api/Employers/5
@@ -125,6 +153,7 @@ namespace server.Controllers
         }
 
         // POST: api/Employers
+        [AllowAnonymous]
         [HttpPost]
         public async Task<IActionResult> PostEmployer([FromForm] NewEmployer employer)
         {

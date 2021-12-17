@@ -2,22 +2,28 @@ import { createContext, useEffect, useState } from 'react'
 
 const AuthContext = createContext({
     user: {},
+    token:null,
     login: () => { },
     logout: () => { },
-    isLoggedIn: false
+    isLoggedIn: false,
+    message:'',
+    clearMessage:()=>{}
 });
 
 export const AuthContextProvider = (props) => {
 
-    const [user, setUser] = useState({})
-    const [isLoggedIn, setIsLoggedIn] = useState(false)
+    const [user, setUser] = useState({});
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const [token, setToken] = useState(null);
+    const [message,setMessage]=useState('');
 
-    useEffect(()=>{
-        if(localStorage.getItem('isLoggedIn')){
-            setUser(JSON.parse(localStorage.getItem('user')))
-            setIsLoggedIn(true)
+    useEffect(() => {
+        if (localStorage.getItem('isLoggedIn')) {
+            setUser(JSON.parse(localStorage.getItem('user')));
+            setToken(localStorage.getItem('token'));
+            setIsLoggedIn(true);
         }
-    },[])
+    }, [])
 
     const login = (email, password) => {
         fetch('https://localhost:44318/api/employers/login', {
@@ -33,27 +39,35 @@ export const AuthContextProvider = (props) => {
         })
             .then(res => res.json())
             .then(data => {
-                setUser(data)
-                setIsLoggedIn(true)
-                localStorage.setItem('user',JSON.stringify(data))
-                localStorage.setItem('isLoggedIn','true')
+                setUser(data);
+                setIsLoggedIn(true);
+                localStorage.setItem('user', JSON.stringify(data));
+                localStorage.setItem('isLoggedIn', 'true');
+                localStorage.setItem('token', data.token);
             })
             .catch(m => {
-                console.log(m)
+                setMessage('Error logging in');
             })
     }
 
     const logout = () => {
-        setUser(null)
-        setIsLoggedIn(false)
-        localStorage.clear()
+        setUser(null);
+        setIsLoggedIn(false);
+        localStorage.clear();
     }
 
-    const context={
+    const clearMessage=()=>{
+        setMessage('')
+    }
+
+    const context = {
         isLoggedIn,
         user,
+        token,
         login,
-        logout
+        logout,
+        message,
+        clearMessage
     }
 
     return (

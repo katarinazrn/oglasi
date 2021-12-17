@@ -4,10 +4,12 @@ import AuthContext from '../../store/auth-context';
 
 const Header = props => {
     const ctx = useContext(AuthContext);
-    
+
     return (
-        <nav className="navbar navbar-expand-md navbar-dark bg-success p-1">
-            <Link className="navbar-brand" to='/'>Job Listings</Link>
+        <nav className="navbar navbar-expand-md navbar-dark bg-primary p-1">
+            <NavLink className="navbar-brand" to='/'>
+                <b>Job Listings</b>
+            </NavLink>
             <button className="navbar-toggler border-0" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span className="navbar-toggler-icon"></span>
             </button>
@@ -17,29 +19,21 @@ const Header = props => {
                         <NavLink className="nav-link" to='/jobs'>Jobs</NavLink>
                     </li>
                     <li className="nav-item">
-                        <NavLink className="nav-link"  to='/employers/' >Employers</NavLink>
+                        <NavLink className="nav-link" to='/employers/' >Employers</NavLink>
                     </li>
                     <li className="nav-item">
-                        <NavLink className="nav-link"  to='/employers/post-job'>Post a job</NavLink>
+                        <NavLink className="nav-link" to='/employers/post-job'>Post a job</NavLink>
                     </li>
+                    {ctx.isLoggedIn && <NavLink className="nav-link" to={'/employers/' + ctx.user.id}>Profile</NavLink>}
+                    {!ctx.isLoggedIn && <li className="nav-item">
+                        <NavLink className="nav-link" to='/employers/login' > Login As Employer</NavLink>
+                    </li>}
                 </ul>
                 {ctx.isLoggedIn &&
-                    <div className="dropdown dropdown-pull-right me-5">
-                        <button className="btn dropdown-toggle" type="button"
-                            id="dropdownMenuButton"
-                            data-toggle="dropdown"
-                            aria-haspopup="true"
-                            aria-expanded="false">
-                            {ctx.user.name}
-                        </button>
-                        <div className="dropdown-menu me-5" aria-labelledby="dropdownMenuButton">
-                            <Link to={'/employers/'+ctx.user.id} className="dropdown-item">
-                                Profile
-                            </Link>
-                            <div className="dropdown-item" onClick={() => ctx.logout()}>
-                                logout
-                            </div>
-                        </div>
+                    <div className="nav-link p-0 d-flex p-sm-1" >
+                        <span>{ctx.user.name}</span>
+                        <span className="material-icons ms-2 h-auto" style={{cursor:'pointer'}}
+                            onClick={() => { ctx.logout() }}>logout</span>
                     </div>
                 }
             </div>

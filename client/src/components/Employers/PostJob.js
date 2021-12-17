@@ -1,4 +1,4 @@
-import { useEffect, useState, useContext } from 'react';
+import { useEffect, useState, useContext, Fragment } from 'react';
 import { useNavigate } from 'react-router-dom';
 import AuthContext from '../../store/auth-context';
 import JobsContext from '../../store/jobs-context';
@@ -9,6 +9,10 @@ const PostJob = props => {
     const jobs_context = useContext(JobsContext);
     const ctx = useContext(AuthContext);
     const navigate = useNavigate();
+
+    useEffect(()=>{
+        if(!ctx.isLoggedIn) navigate('/employers/login');
+    },[]);
 
     const [job, setJob] = useState({
         employerId: -1,
@@ -44,11 +48,6 @@ const PostJob = props => {
 
     }, [props.job])
 
-
-    if (!ctx.isLoggedIn) {
-        navigate('/employers/login')
-    }
-
     const handleSubmit = e => {
         e.preventDefault();
         jobs_context.addJob(job)
@@ -66,8 +65,13 @@ const PostJob = props => {
         });
     }
 
+    if(!ctx.isLoggedIn){
+        return <Fragment></Fragment>
+    }
+
     return (
         <div className="my-5">
+            <h1>Create job post</h1>
             <JobForm
                 job={job}
                 handleChange={handleChange}

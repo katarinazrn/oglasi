@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -10,6 +11,7 @@ using server.Models;
 
 namespace server.Controllers
 {
+    [Authorize]
     [EnableCors("MyPolicy")]
     [Route("api/[controller]")]
     [ApiController]
@@ -23,6 +25,7 @@ namespace server.Controllers
         }
 
         // GET: api/FieldOfWorks
+        [AllowAnonymous]
         [HttpGet]
         public IEnumerable<FieldOfWork> GetFieldsOfWork()
         {
@@ -30,6 +33,7 @@ namespace server.Controllers
         }
 
         // GET: api/FieldOfWorks/5
+        [AllowAnonymous]
         [HttpGet("{id}")]
         public async Task<IActionResult> GetFieldOfWork([FromRoute] long id)
         {

@@ -39,12 +39,12 @@ const JobListingDetails = props => {
     }
 
     const tags = job.tags && job.tags.split(',').map(tag =>
-        <div key={tag} className="badge bg-primary me-1" >
+        <div key={tag} className="badge bg-info me-1" >
             {tag.trim()}
         </div>)
 
     const deleteJob = () => {
-        jobs_context.deleteJob(job.id)
+        jobs_context.deleteJob(job)
         navigate(-1)
     }
 
@@ -87,7 +87,7 @@ const JobListingDetails = props => {
                                 <button type="button" className="btn btn-danger m-1" data-toggle="modal" data-target="#modal">
                                     Delete
                                 </button>
-                                <button className="btn btn-info m-1" onClick={() => navigate('/employers/post-job/' + job.id)}>Edit</button>
+                                <button className="btn btn-success m-1" onClick={() => navigate('/employers/post-job/' + job.id)}>Edit</button>
                             </div>
                         }
                     </div>

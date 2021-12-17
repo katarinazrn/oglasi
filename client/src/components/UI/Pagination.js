@@ -11,6 +11,7 @@ const Pagination = props => {
 
     useEffect(() => {
         setPages(Math.ceil(props.data.length / props.limit));
+        setCurrentPage(1)
     }, [props.data])
 
     const goToNextPage = () => {
@@ -43,7 +44,7 @@ const Pagination = props => {
         }
         return group;
     };
-
+    
     return (
         <div className='mb-3'>
             {getData().map(job => {
@@ -51,7 +52,7 @@ const Pagination = props => {
                 return <JobListingCard key={job.id} job={job} employer={employer} />
             })}
             {props.data.length > props.limit &&
-                <div className='d-flex justify-content-center'>
+                <div className='d-flex mt-2 justify-content-center'>
                     <div className='pagination'>
                         <div className={currentPage == 1 ? 'page-item disabled' : 'page-item'}>
                             <button

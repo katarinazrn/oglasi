@@ -33,8 +33,10 @@ export const JobsContextProvider = props => {
             method: 'POST',
             headers: {
                 'Access-Control-Allow-Origin': '*',
-                'Content-type': 'application/json'
+                'Content-type': 'application/json',
+                'Authorization': 'Bearer ' + localStorage.getItem("token")
             },
+
             body: JSON.stringify(job)
         })
             .then(res => res.json())
@@ -48,18 +50,20 @@ export const JobsContextProvider = props => {
 
     }
 
-    const deleteJob = id => {
-        fetch('https://localhost:44318/api/joblistings/' + id, {
+    const deleteJob = job => {
+        fetch('https://localhost:44318/api/joblistings/' + job.id, {
             method: 'DELETE',
             headers: {
                 'Access-Control-Allow-Origin': '*',
-                'Content-type': 'application/json'
-            }
+                'Content-type': 'application/json',
+                'Authorization': 'Bearer ' + localStorage.getItem("token")
+            },
+            body: JSON.stringify(job)
         })
             .then(res => res.json())
             .then(data => {
-                setAllJobs(prev => prev.filter(x => x.id != id))
-                setFilteredJobs(prev => prev.filter(x => x.id != id));
+                setAllJobs(prev => prev.filter(x => x.id != job.id))
+                setFilteredJobs(prev => prev.filter(x => x.id != job.id));
             })
     }
 
@@ -68,7 +72,8 @@ export const JobsContextProvider = props => {
             method: 'PUT',
             headers: {
                 'Access-Control-Allow-Origin': '*',
-                'Content-type': 'application/json'
+                'Content-type': 'application/json',
+                'Authorization': 'Bearer ' + localStorage.getItem("token")
             },
             body: JSON.stringify(job)
         })
@@ -84,16 +89,16 @@ export const JobsContextProvider = props => {
         let jobListings = [...allJobs];
 
         if (location.trim() != "") {
-            jobListings = jobListings.filter(x => x.location.toLowerCase() === location.toLowerCase());
+            jobListings = jobListings.filter(x => x.location.toLowerCase() === location.toLowerCase() || x.location.toLowerCase()==='any location');
         }
 
         if (seniority.trim() != "") {
-            if (!seniority === 'Any Seniority')
-                jobListings = jobListings.filter(x => x.seniority.toLowerCase() === seniority.toLowerCase());
+            jobListings = jobListings.filter(x => x.seniority.toLowerCase() === seniority.toLowerCase() ||x.seniority.toLowerCase()==='any seniority' );
         }
 
         if (fieldOfWork.trim() != "") {
-            jobListings = jobListings.filter(x => x.fieldOfWork.toLowerCase() === fieldOfWork.toLowerCase());
+            if (fieldOfWork !== 'Any field of work')
+                jobListings = jobListings.filter(x => x.fieldOfWork.toLowerCase() === fieldOfWork.toLowerCase() || x.fieldOfWork.toLowerCase()==='any field of work');
         }
 
         if (titleOrKeyword && titleOrKeyword.trim() != "") {

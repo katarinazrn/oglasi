@@ -100,8 +100,8 @@ const JobForm = props => {
                     id='tags' name='tags' type='text' value={props.job.tags} />
             </div>
             <div className='form-group d-flex justify-content-center'>
-                <input type='submit' className='btn btn-secondary my-3 px-3' value={props.type} />
-                <input type='button' className='btn btn-info my-3 ms-2 px-3' value='Cancel' onClick={()=>navigate(-1)} />
+                <input type='submit' className='btn btn-info my-3 px-3' value={props.type} />
+                <input type='button' className='btn btn-secondary my-3 ms-2 px-3' value='Cancel' onClick={()=>navigate(-1)} />
             </div>
         </form>
     )
